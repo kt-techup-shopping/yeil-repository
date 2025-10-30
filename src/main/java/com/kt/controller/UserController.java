@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kt.dto.UserCreateRequest;
 import com.kt.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)
 	// json 형태의 body에 담겨서 post 요청으로 /users로 들어오면
 	// @RequestBody를 보고 jacksonObjectMapper가 동작해서 json to dto로 변환
-	public void create(@RequestBody UserCreateRequest request) {
+	public void create(@Valid @RequestBody UserCreateRequest request) {
 		// Jackson object mapper -> json to dto 맵핑
 		System.out.println(request.toString());
 		userService.create(request);
