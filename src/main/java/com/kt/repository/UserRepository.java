@@ -20,4 +20,10 @@ public class UserRepository {
 		jdbcTemplate.update(sql, user.getLoginId(), user.getPassword(), user.getName(), user.getBirthday());
 		System.out.println("Saved User: "+user.toString());
 	}
+
+	public Long selectMaxId() {
+		var sql = "SELECT MAX(id) FROM MEMBER";
+
+		return jdbcTemplate.queryForObject(sql, Long.class);
+	}
 }
