@@ -38,16 +38,15 @@ public class UserService {
 		return userRepository.existsByLoginId(loginId);
 	}
 
-	public void changePassword(int id, String oldPassword, String password) {
-		// TODO: 존재하지 않는 경우 유저를 찾을 수 없다는 예외 처리
-		// 서비스 입장에서는 id 값이 외부에서 들어오는 값
-		// 실제로 DB에 유저가 존재하는지 검사
-		// 존재 O 업데이트
-		// 존재 X 예외 처리
-		if(!userRepository.existsById(id)){
-			throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+	public void changePassword(long id, String oldPassword, String password) {
+		var user = userRepository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+		if (!user.getPassword().equals(oldPassword)) {
+			throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
 		}
-		if(oldPassword.equals(password)) {
+
+		if (oldPassword.equals(password)) {
 			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
 		}
 		userRepository.updatePassword(id, password);
