@@ -121,4 +121,9 @@ public class UserRepository {
 
 		return Pair.of(users, totalElements);
 	}
+
+	public void updateById(Long id, String name, String email, String mobile){
+		var sql = "UPDATE member SET name = ?, email = ?, mobile = ? WHERE id = ?";
+		jdbcTemplate.update(sql, name, email, mobile, id);
+	}
 }
