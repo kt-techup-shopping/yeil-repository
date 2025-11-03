@@ -19,7 +19,7 @@ public class UserService {
 	public void create(UserCreateRequest request) {
 		System.out.println(request.toString());
 		var newUser = new User(
-			userRepository.selectMaxId()+1,
+			userRepository.selectMaxId() + 1,
 			request.loginId(),
 			request.password(),
 			request.name(),
@@ -34,7 +34,21 @@ public class UserService {
 	}
 
 	// TODO: 아이디 중복 검사 만들기
-	public boolean isDuplicateLoginId(String loginId){
+	public boolean isDuplicateLoginId(String loginId) {
 		return userRepository.existsByLoginId(loginId);
+	}
+
+	public void changePassword(long id, String oldPassword, String password) {
+		var user = userRepository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+		if (!user.getPassword().equals(oldPassword)) {
+			throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+		}
+
+		if (oldPassword.equals(password)) {
+			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
+		}
+		userRepository.updatePassword(id, password);
 	}
 }

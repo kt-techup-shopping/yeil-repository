@@ -2,7 +2,9 @@ package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.dto.UserCreateRequest;
+import com.kt.dto.UserUpdatePasswordRequest;
 import com.kt.service.UserService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,7 +46,7 @@ public class UserController {
 	// @RequestBody를 보고 jacksonObjectMapper가 동작해서 json to dto로 변환
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void create(@Valid @RequestBody UserCreateRequest request) {
+	public void create(@RequestBody @Valid UserCreateRequest request) {
 		// Jackson object mapper -> json to dto 맵핑
 		System.out.println(request.toString());
 		userService.create(request);
@@ -57,4 +60,18 @@ public class UserController {
 	public Boolean isDuplicateLoginId(@RequestParam String loginId) {
 		return userService.isDuplicateLoginId(loginId);
 	}
+
+	// URI는 식별이 가능해야 함 -> 어떤 유저인지
+	// body -> JSON 전달
+	// 식별자 id 값 받는 방법
+	// 1. body에 id 값을 같이 받는다
+	// 2. URI에 id 값을 넣는다
+	// 3. 인증/인가 객체에서 id 값을 꺼낸다
+	@PutMapping("/{userId}/update-password")
+	public void updatePassword(
+		@PathVariable(name = "userId") Long id,
+		@RequestBody @Valid UserUpdatePasswordRequest request){
+		userService.changePassword(id, request.oldPassword(), request.password());
+	}
+
 }
