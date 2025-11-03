@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kt.domain.Gender;
 import com.kt.domain.User;
+import com.kt.dto.CustomPage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -104,5 +106,15 @@ public class UserRepository {
 			rs.getObject("createdAt", LocalDateTime.class),
 			rs.getObject("updatedAt", LocalDateTime.class)
 		);
+	}
+
+	public CustomPage selectAll(int page, int size) {
+		var sql = "SELECT * FROM member LIMIT ? OFFSET ?";
+		var users = jdbcTemplate.query(sql, rowMapper(), size, size);
+
+		var countSql = "SELECT COUNT(*) FROM member";
+		var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
+		var pages = (int) Math.ceil((double) totalElements / size);
+		return new CustomPage(users, page, size, pages, totalElements);
 	}
 }
