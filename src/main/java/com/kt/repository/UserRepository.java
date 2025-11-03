@@ -109,12 +109,13 @@ public class UserRepository {
 		);
 	}
 
-	public Pair<List<User>, Long> selectAll(int page, int size) {
-		var sql = "SELECT * FROM member LIMIT ? OFFSET ?";
-		var users = jdbcTemplate.query(sql, rowMapper(), size, size);
+	public Pair<List<User>, Long> selectAll(int page, int size, String keyword) {
+		// 키워드 검색 = LIKE %keyword%(포함), %keyword(시작), keyword%(끝)
+		var sql = "SELECT * FROM member WHERE name LIKE CONCAT('%', ?, '%') LIMIT ? OFFSET ?";
+		var users = jdbcTemplate.query(sql, rowMapper(), keyword, size, page);
 
-		var countSql = "SELECT COUNT(*) FROM member";
-		var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
+		var countSql = "SELECT COUNT(*) FROM member WHERE name LIKE CONCAT('%', ?, '%')";
+		var totalElements = jdbcTemplate.queryForObject(countSql, Long.class, keyword);
 		// var pages = (int) Math.ceil((double) totalElements / size);
 		// return new CustomPage(users, page, size, pages, totalElements);
 
