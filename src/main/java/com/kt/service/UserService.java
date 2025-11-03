@@ -57,4 +57,9 @@ public class UserService {
 		var pages = (int)Math.ceil((double)pair.getSecond() / size);
 		return new CustomPage(pair.getFirst(), page, size, pages, pair.getSecond());
 	}
+
+	public User detail(Long id){
+		return userRepository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+	}
 }
