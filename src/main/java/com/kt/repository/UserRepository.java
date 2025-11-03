@@ -123,7 +123,7 @@ public class UserRepository {
 	}
 
 	public void updateById(Long id, String name, String email, String mobile){
-		var sql = "UPDATE member SET name = ?, email = ?, mobile = ? WHERE id = ?";
-		jdbcTemplate.update(sql, name, email, mobile, id);
+		var sql = "UPDATE member SET name = ?, email = ?, mobile = ?, updatedAt = ? WHERE id = ?";
+		jdbcTemplate.update(sql, name, email, mobile, LocalDateTime.now(), id);
 	}
 }
