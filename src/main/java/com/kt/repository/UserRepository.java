@@ -4,14 +4,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.kt.domain.Gender;
 import com.kt.domain.User;
+import com.kt.dto.CustomPage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -104,5 +107,18 @@ public class UserRepository {
 			rs.getObject("createdAt", LocalDateTime.class),
 			rs.getObject("updatedAt", LocalDateTime.class)
 		);
+	}
+
+	public Pair<List<User>, Long> selectAll(int page, int size, String keyword) {
+		// 키워드 검색 = LIKE %keyword%(포함), %keyword(시작), keyword%(끝)
+		var sql = "SELECT * FROM member WHERE name LIKE CONCAT('%', ?, '%') LIMIT ? OFFSET ?";
+		var users = jdbcTemplate.query(sql, rowMapper(), keyword, size, page);
+
+		var countSql = "SELECT COUNT(*) FROM member WHERE name LIKE CONCAT('%', ?, '%')";
+		var totalElements = jdbcTemplate.queryForObject(countSql, Long.class, keyword);
+		// var pages = (int) Math.ceil((double) totalElements / size);
+		// return new CustomPage(users, page, size, pages, totalElements);
+
+		return Pair.of(users, totalElements);
 	}
 }
