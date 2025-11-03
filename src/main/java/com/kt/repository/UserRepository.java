@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -108,13 +109,15 @@ public class UserRepository {
 		);
 	}
 
-	public CustomPage selectAll(int page, int size) {
+	public Pair<List<User>, Long> selectAll(int page, int size) {
 		var sql = "SELECT * FROM member LIMIT ? OFFSET ?";
 		var users = jdbcTemplate.query(sql, rowMapper(), size, size);
 
 		var countSql = "SELECT COUNT(*) FROM member";
 		var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
-		var pages = (int) Math.ceil((double) totalElements / size);
-		return new CustomPage(users, page, size, pages, totalElements);
+		// var pages = (int) Math.ceil((double) totalElements / size);
+		// return new CustomPage(users, page, size, pages, totalElements);
+
+		return Pair.of(users, totalElements);
 	}
 }
