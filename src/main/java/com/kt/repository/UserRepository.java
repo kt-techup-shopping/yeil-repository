@@ -51,4 +51,14 @@ public class UserRepository {
 		var maxId = jdbcTemplate.queryForObject(sql, Long.class);
 		return maxId == null ? 0L : maxId;
 	}
+
+	/* 	아이디 중복 체크 방법 - 3가지
+		1. count 해서 0보다 큰지 체크 -> 모든 데이터를 살펴봐야 함 (Full scan)
+		2. unique 제약 조건 걸어서 예외 처리 -> 유니크 키 예외 처리 어려움
+		3. exists 존재 여부 체크 -> boolean 값 존재 여부를 바로 알 수 있음
+	 */
+	public boolean existsByLoginId(String loginId){
+		var sql = "SELECT EXISTS (SELECT id FROM MEMBER WHERE loginId = ?)";
+		return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class));
+	}
 }
