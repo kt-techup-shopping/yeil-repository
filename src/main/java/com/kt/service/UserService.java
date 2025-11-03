@@ -62,4 +62,10 @@ public class UserService {
 		return userRepository.selectById(id)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 	}
+
+	public void update(Long id, String name, String email, String mobile) {
+		userRepository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+		userRepository.updateById(id, name, email, mobile);
+	}
 }
