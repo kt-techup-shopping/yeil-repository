@@ -126,4 +126,9 @@ public class UserRepository {
 		var sql = "UPDATE member SET name = ?, email = ?, mobile = ?, updatedAt = ? WHERE id = ?";
 		jdbcTemplate.update(sql, name, email, mobile, LocalDateTime.now(), id);
 	}
+
+	public void deleteById(Long id){
+		var sql = "DELETE FROM member WHERE id = ?";
+		jdbcTemplate.update(sql, id);
+	}
 }
