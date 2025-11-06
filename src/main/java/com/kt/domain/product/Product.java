@@ -28,13 +28,21 @@ public class Product extends BaseEntity {
 	private List<OrderProduct> orderProducts = new ArrayList<>();
 
 	// 생성
-	public Product(String name, Long price, Long stock, ProductStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public Product(String name, Long price, Long stock, ProductStatus status) {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
 		this.status = status;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
+		this.createdAt = LocalDateTime.now();;
+		this.updatedAt = LocalDateTime.now();;
+	}
+
+	public void update(String name, Long price, Long stock, ProductStatus status) {
+		this.name = name;
+		this.price = price;
+		this.stock = stock;
+		this.status = status;
+		this.updatedAt = LocalDateTime.now();
 	}
 	// 수정
 	// 삭제

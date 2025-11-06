@@ -1,7 +1,5 @@
 package com.kt.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +18,21 @@ public class ProductService {
 	private final ProductRepository productRepository;
 
 	// 상품 생성
-	public void create(ProductCreateRequest request){
+	public void create(ProductCreateRequest request) {
 		var newProduct = new Product(
 			request.name(),
 			request.price(),
 			request.stock(),
-			ProductStatus.ACTIVE,
-			LocalDateTime.now(),
-			LocalDateTime.now()
+			ProductStatus.ACTIVE
 		);
 		productRepository.save(newProduct);
+	}
+
+	// 상품 수정
+	public void update(Long id, String name, Long price, Long stock, ProductStatus status) {
+		var product = productRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		product.update(name, price, stock, status);
 	}
 
 }
