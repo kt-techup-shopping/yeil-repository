@@ -3,14 +3,15 @@ package com.kt.dto;
 import com.kt.domain.product.ProductStatus;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record ProductUpdateRequest(
 	@NotBlank
 	String name,
-	@NotBlank
+	@NotNull
 	Long price,
-	@NotBlank
+	@NotNull
 	Long stock,
-	@NotBlank
+	@NotNull
 	ProductStatus status) {
 }

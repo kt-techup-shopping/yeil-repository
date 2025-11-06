@@ -1,13 +1,13 @@
 package com.kt.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record ProductCreateRequest(
 	@NotBlank
 	String name,
-	@NotBlank
+	@NotNull
 	Long price,
-	@NotBlank
+	@NotNull
 	Long stock) {
-
 }
