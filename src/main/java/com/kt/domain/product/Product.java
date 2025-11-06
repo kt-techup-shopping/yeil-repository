@@ -1,5 +1,6 @@
 package com.kt.domain.product;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,11 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Product extends BaseEntity {
 	private String name;
 	private Long price;
@@ -25,6 +28,14 @@ public class Product extends BaseEntity {
 	private List<OrderProduct> orderProducts = new ArrayList<>();
 
 	// 생성
+	public Product(String name, Long price, Long stock, ProductStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		this.name = name;
+		this.price = price;
+		this.stock = stock;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 	// 수정
 	// 삭제
 	// 조회 (리스트, 단건)
