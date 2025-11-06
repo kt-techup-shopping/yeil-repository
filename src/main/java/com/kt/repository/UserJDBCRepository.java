@@ -94,18 +94,19 @@ public class UserJDBCRepository {
 	}
 
 	private User mapToUser(ResultSet rs) throws SQLException {
-		return new User(
-			rs.getLong("id"),
-			rs.getString("loginId"),
-			rs.getString("password"),
-			rs.getString("name"),
-			rs.getString("email"),
-			rs.getString("mobile"),
-			Gender.valueOf(rs.getString("gender")),
-			rs.getObject("birthday", LocalDate.class),
-			rs.getObject("createdAt", LocalDateTime.class),
-			rs.getObject("updatedAt", LocalDateTime.class)
-		);
+		// return new User(
+		// 	rs.getLong("id"),
+		// 	rs.getString("loginId"),
+		// 	rs.getString("password"),
+		// 	rs.getString("name"),
+		// 	rs.getString("email"),
+		// 	rs.getString("mobile"),
+		// 	Gender.valueOf(rs.getString("gender")),
+		// 	rs.getObject("birthday", LocalDate.class),
+		// 	rs.getObject("createdAt", LocalDateTime.class),
+		// 	rs.getObject("updatedAt", LocalDateTime.class)
+		// );
+		return new User();
 	}
 
 	public Pair<List<User>, Long> selectAll(int page, int size, String keyword) {

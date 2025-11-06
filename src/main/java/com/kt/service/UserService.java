@@ -19,18 +19,19 @@ public class UserService {
 
 	public void create(UserCreateRequest request) {
 		System.out.println(request.toString());
-		var newUser = new User(
-			userJDBCRepository.selectMaxId() + 1,
-			request.loginId(),
-			request.password(),
-			request.name(),
-			request.email(),
-			request.mobile(),
-			request.gender(),
-			request.birthday(),
-			LocalDateTime.now(),
-			LocalDateTime.now()
-		);
+		// var newUser = new User(
+		// 	userJDBCRepository.selectMaxId() + 1,
+		// 	request.loginId(),
+		// 	request.password(),
+		// 	request.name(),
+		// 	request.email(),
+		// 	request.mobile(),
+		// 	request.gender(),
+		// 	request.birthday(),
+		// 	LocalDateTime.now(),
+		// 	LocalDateTime.now()
+		// );
+		var newUser = new User();
 		userJDBCRepository.save(newUser);
 	}
 
