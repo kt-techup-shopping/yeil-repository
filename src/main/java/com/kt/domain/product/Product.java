@@ -36,7 +36,7 @@ public class Product extends BaseEntity {
 		this.createdAt = LocalDateTime.now();;
 		this.updatedAt = LocalDateTime.now();;
 	}
-
+	// 수정
 	public void update(String name, Long price, Long stock, ProductStatus status) {
 		this.name = name;
 		this.price = price;
@@ -44,7 +44,7 @@ public class Product extends BaseEntity {
 		this.status = status;
 		this.updatedAt = LocalDateTime.now();
 	}
-	// 수정
+
 	// 삭제
 	// 조회 (리스트, 단건)
 	// 상태 변경
