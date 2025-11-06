@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 import com.kt.dto.CustomPage;
 import com.kt.dto.UserCreateRequest;
 import com.kt.repository.UserJDBCRepository;
@@ -19,18 +19,19 @@ public class UserService {
 
 	public void create(UserCreateRequest request) {
 		System.out.println(request.toString());
-		var newUser = new User(
-			userJDBCRepository.selectMaxId() + 1,
-			request.loginId(),
-			request.password(),
-			request.name(),
-			request.email(),
-			request.mobile(),
-			request.gender(),
-			request.birthday(),
-			LocalDateTime.now(),
-			LocalDateTime.now()
-		);
+		// var newUser = new User(
+		// 	userJDBCRepository.selectMaxId() + 1,
+		// 	request.loginId(),
+		// 	request.password(),
+		// 	request.name(),
+		// 	request.email(),
+		// 	request.mobile(),
+		// 	request.gender(),
+		// 	request.birthday(),
+		// 	LocalDateTime.now(),
+		// 	LocalDateTime.now()
+		// );
+		var newUser = new User();
 		userJDBCRepository.save(newUser);
 	}
 

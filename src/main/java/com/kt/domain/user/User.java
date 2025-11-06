@@ -1,7 +1,11 @@
-package com.kt.domain;
+package com.kt.domain.user;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.kt.domain.order.Order;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,14 +13,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +36,7 @@ public class User {
 	private LocalDate birthday;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+
+	@OneToMany(mappedBy = "user")
+	private List<Order> orders = new ArrayList<>();
 }
