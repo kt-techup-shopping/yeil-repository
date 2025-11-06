@@ -1,13 +1,16 @@
 package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.dto.ProductCreateRequest;
+import com.kt.dto.ProductUpdateRequest;
 import com.kt.dto.UserCreateRequest;
 import com.kt.service.ProductService;
 
@@ -33,5 +36,11 @@ public class ProductController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void create(@RequestBody @Valid ProductCreateRequest request) {
 		productService.create(request);
+	}
+
+	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void update(@PathVariable Long id, @RequestBody @Valid ProductUpdateRequest request) {
+		productService.update(id, request.name(), request.price(), request.stock(), request.status());
 	}
 }
