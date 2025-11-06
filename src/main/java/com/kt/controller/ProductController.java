@@ -63,4 +63,10 @@ public class ProductController {
 	){
 		return productService.list(PageRequest.of(page - 1, size));
 	}
+
+	@GetMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public Product detail(@PathVariable Long id){
+		return productService.detail(id);
+	}
 }

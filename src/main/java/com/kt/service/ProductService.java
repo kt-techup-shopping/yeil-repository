@@ -49,5 +49,10 @@ public class ProductService {
 		return productRepository.findAll(pageable);
 	}
 
+	// 상품 단건 조회
+	public Product detail(Long id){
+		return productRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+	}
 
 }
