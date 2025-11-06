@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kt.common.BaseEntity;
-import com.kt.domain.order.Order;
 import com.kt.domain.orderProduct.OrderProduct;
 
 import jakarta.persistence.Entity;
@@ -22,8 +21,8 @@ public class Product extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ProductStatus status;
 
-	// @OneToMany
-	// private List<Order> orders = new ArrayList<>();
+	@OneToMany(mappedBy = "product")
+	private List<OrderProduct> orderProducts = new ArrayList<>();
 
 	// 생성
 	// 수정
