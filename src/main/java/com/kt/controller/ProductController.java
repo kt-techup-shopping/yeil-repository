@@ -1,18 +1,22 @@
 package com.kt.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kt.domain.product.Product;
 import com.kt.dto.ProductCreateRequest;
 import com.kt.dto.ProductUpdateRequest;
-import com.kt.dto.UserCreateRequest;
 import com.kt.service.ProductService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,5 +53,14 @@ public class ProductController {
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable Long id) {
 		productService.delete(id);
+	}
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public Page<Product> list(
+		@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "10") int size
+	){
+		return productService.list(PageRequest.of(page - 1, size));
 	}
 }
