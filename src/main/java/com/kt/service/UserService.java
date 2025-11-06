@@ -2,45 +2,48 @@ package com.kt.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.domain.user.User;
-import com.kt.dto.CustomPage;
 import com.kt.dto.UserCreateRequest;
-import com.kt.repository.UserJDBCRepository;
+import com.kt.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
-	private final UserJDBCRepository userJDBCRepository;
+	private final UserRepository userRepository;
 
+	// 트랜잭션 처리
+	// PSA - Portable Service Abstraction
+	// 환경설정을 살잒 바꿔서 일정한 서비스를 제공하는 것
 	public void create(UserCreateRequest request) {
-		System.out.println(request.toString());
-		// var newUser = new User(
-		// 	userJDBCRepository.selectMaxId() + 1,
-		// 	request.loginId(),
-		// 	request.password(),
-		// 	request.name(),
-		// 	request.email(),
-		// 	request.mobile(),
-		// 	request.gender(),
-		// 	request.birthday(),
-		// 	LocalDateTime.now(),
-		// 	LocalDateTime.now()
-		// );
-		var newUser = new User();
-		userJDBCRepository.save(newUser);
+		var newUser = new User(
+			request.loginId(),
+			request.password(),
+			request.name(),
+			request.email(),
+			request.mobile(),
+			request.gender(),
+			request.birthday(),
+			LocalDateTime.now(),
+			LocalDateTime.now()
+		);
+		userRepository.save(newUser);
 	}
 
 	public boolean isDuplicateLoginId(String loginId) {
-		return userJDBCRepository.existsByLoginId(loginId);
+		return userRepository.existsByLoginId(loginId);
 	}
 
 	public void changePassword(long id, String oldPassword, String password) {
-		var user = userJDBCRepository.selectById(id)
+		var user = userRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
 		if (!user.getPassword().equals(oldPassword)) {
@@ -50,29 +53,27 @@ public class UserService {
 		if (oldPassword.equals(password)) {
 			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
 		}
-		userJDBCRepository.updatePassword(id, password);
+		user.changePassword(password);
 	}
 
-	public CustomPage search(int page, int size, String keyword) {
-		var pair = userJDBCRepository.selectAll(page - 1, size, keyword);
-		var pages = (int)Math.ceil((double)pair.getSecond() / size);
-		return new CustomPage(pair.getFirst(), page, size, pages, pair.getSecond());
+	// CustomPage -> Pageable 인터페이스
+	public Page<User> search(Pageable pageable, String keyword) {
+		return userRepository.findAllByNameContaining(pageable, keyword);
 	}
 
 	public User detail(Long id){
-		return userJDBCRepository.selectById(id)
+		return userRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 	}
 
 	public void update(Long id, String name, String email, String mobile) {
-		userJDBCRepository.selectById(id)
+		var user = userRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-		userJDBCRepository.updateById(id, name, email, mobile);
+		user.update(name, email, mobile);
 	}
 
 	public void delete(Long id) {
-		userJDBCRepository.selectById(id)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-		userJDBCRepository.deleteById(id);
+		// 삭제 -> Soft Delete (논리 삭제), Hard Delete (물리 삭제)
+		userRepository.deleteById(id);
 	}
 }
