@@ -2,7 +2,7 @@ package com.kt.dto;
 
 import java.util.List;
 
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 
 // Paging 구조
 // 백엔드 입장에서 필요한 것

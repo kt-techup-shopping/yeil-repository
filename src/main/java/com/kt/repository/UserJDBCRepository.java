@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.kt.domain.Gender;
-import com.kt.domain.User;
+import com.kt.domain.user.Gender;
+import com.kt.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 
