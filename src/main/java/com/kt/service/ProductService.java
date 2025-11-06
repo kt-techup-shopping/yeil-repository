@@ -35,4 +35,11 @@ public class ProductService {
 		product.update(name, price, stock, status);
 	}
 
+	// 상품 삭제
+	public void delete(Long id) {
+		var product = productRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		productRepository.delete(product);
+	}
+
 }
