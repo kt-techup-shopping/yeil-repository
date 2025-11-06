@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.dto.ProductCreateRequest;
 import com.kt.dto.ProductUpdateRequest;
-import com.kt.dto.UserCreateRequest;
 import com.kt.service.ProductService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
