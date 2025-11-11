@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kt.domain.product.Product;
 import com.kt.domain.product.ProductStatus;
 import com.kt.dto.ProductCreateRequest;
-import com.kt.repository.ProductRepository;
+import com.kt.repository.product.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +25,7 @@ public class ProductService {
 			request.name(),
 			request.price(),
 			request.stock(),
-			ProductStatus.ACTIVE
+			ProductStatus.ACTIVATED
 		);
 		productRepository.save(newProduct);
 	}

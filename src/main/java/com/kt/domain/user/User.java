@@ -28,13 +28,17 @@ public class User extends BaseEntity {
 	// string: enum의 이름을 DB에 저장
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+
+	@Enumerated(EnumType.STRING)
+	 private Role role;
+
 	private LocalDate birthday;
 
 	@OneToMany(mappedBy = "user")
 	private List<Order> orders = new ArrayList<>();
 
 	public User(String loginId, String password, String name, String email, String mobile, Gender gender,
-		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt, Role role) {
 		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
@@ -44,7 +48,21 @@ public class User extends BaseEntity {
 		this.birthday = birthday;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.role = role;
 	}
+
+	// 정적 팩토리 메서드 방식
+	public static User normalUser(String loginId, String password, String name, String email, String mobile, Gender gender,
+		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt){
+		return new User(loginId, password, name, email, mobile, gender, birthday, createdAt, updatedAt, Role.USER);
+	}
+
+	public static User adminUser(String loginId, String password, String name, String email, String mobile, Gender gender,
+		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt){
+		return new User(loginId, password, name, email, mobile, gender, birthday, createdAt, updatedAt, Role.ADMIN);
+	}
+
+
 
 	public void changePassword(String password) {
 		this.password = password;
