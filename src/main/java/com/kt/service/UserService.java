@@ -7,9 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kt.domain.user.Role;
 import com.kt.domain.user.User;
 import com.kt.dto.UserCreateRequest;
-import com.kt.repository.UserRepository;
+import com.kt.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,7 @@ public class UserService {
 	// PSA - Portable Service Abstraction
 	// 환경설정을 살잒 바꿔서 일정한 서비스를 제공하는 것
 	public void create(UserCreateRequest request) {
-		var newUser = new User(
+		var newUser = User.normalUser(
 			request.loginId(),
 			request.password(),
 			request.name(),
@@ -58,7 +59,7 @@ public class UserService {
 
 	// CustomPage -> Pageable 인터페이스
 	public Page<User> search(Pageable pageable, String keyword) {
-		return userRepository.findAllByNameContaining(pageable, keyword);
+		return userRepository.findAllByNameContaining(keyword, pageable);
 	}
 
 	public User detail(Long id){

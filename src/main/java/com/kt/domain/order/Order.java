@@ -8,6 +8,7 @@ import com.kt.common.BaseEntity;
 import com.kt.domain.orderProduct.OrderProduct;
 import com.kt.domain.user.User;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,13 +17,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "orders")
+@NoArgsConstructor
 public class Order extends BaseEntity {
-	private String receiverName;
-	private String receiverAddress;
-	private String receiverMobile;
+	@Embedded
+	private Receiver receiver;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	private LocalDateTime deliveredAt;
@@ -50,4 +52,19 @@ public class Order extends BaseEntity {
 	// 주문 생성 완료 재고 차감
 	// 배송 받는 사람 정보 수정
 	// 주문 취소
+
+	private Order(Receiver receiver, User user) {
+		this.receiver = receiver;
+		this.user = user;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	public static Order create(Receiver receiver, User user) {
+		return new Order(receiver, user);
+	}
+
+	public void mapToORderProduct(OrderProduct orderProduct) {
+		this.orderProducts.add(orderProduct);
+	}
 }
