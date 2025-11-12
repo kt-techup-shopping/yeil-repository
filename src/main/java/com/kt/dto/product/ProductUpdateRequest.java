@@ -1,4 +1,4 @@
-package com.kt.dto;
+package com.kt.dto.product;
 
 import com.kt.domain.product.ProductStatus;
 

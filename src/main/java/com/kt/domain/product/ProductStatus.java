@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ProductStatus {
+	// 상품 초기 상태 (판매중)
 	ACTIVATED("판매중"),
 	SOLD_OUT("품절"),
 	IN_ACTIVATED("판매중지"),

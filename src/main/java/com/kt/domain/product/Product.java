@@ -22,26 +22,22 @@ public class Product extends BaseEntity {
 	private Long price;
 	private Long stock;
 	@Enumerated(EnumType.STRING)
-	private ProductStatus status;
+	private ProductStatus status = ProductStatus.ACTIVATED;
 
 	@OneToMany(mappedBy = "product")
 	private List<OrderProduct> orderProducts = new ArrayList<>();
 
 	// 생성
-	public Product(String name, Long price, Long stock, ProductStatus status) {
+	public Product(String name, Long price, Long stock) {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
-		this.status = status;
-		this.createdAt = LocalDateTime.now();;
-		this.updatedAt = LocalDateTime.now();;
 	}
 	// 수정
-	public void update(String name, Long price, Long stock, ProductStatus status) {
+	public void update(String name, Long price, Long stock) {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
-		this.status = status;
 		this.updatedAt = LocalDateTime.now();
 	}
 
@@ -77,11 +73,5 @@ public class Product extends BaseEntity {
 	public void mapToOrderProduct(OrderProduct orderProduct) {
 		this.orderProducts.add(orderProduct);
 	}
-
-	// 삭제
-	// 조회 (리스트, 단건)
-	// 상태 변경
-	// 재고 수량 감소
-	// 재고 수량 증가
 
 }
