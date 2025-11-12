@@ -41,12 +41,12 @@ public class OrderService {
 		var receiver = new Receiver(receiverName, receiverAddress, receiverMobile);
 
 		var order = orderRepository.save(Order.create(receiver, user));
-		var orderProduct = orderProductRepository.save(new OrderProduct(order, product));
+		var orderProduct = orderProductRepository.save(new OrderProduct(order, product, quantity));
 
 		product.decreaseStock(quantity);
 
 		product.mapToOrderProduct(orderProduct);
-		order.mapToORderProduct(orderProduct);
+		order.mapToOrderProduct(orderProduct);
 	}
 
 }

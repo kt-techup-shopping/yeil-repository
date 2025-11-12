@@ -34,8 +34,8 @@ public class Order extends BaseEntity {
 	// N:1 -> 다대일
 	// Many To One
 	// FK -> 많은 쪽에 생김
-	// 하나의 주문은 여러 명의 회원이 할 수 없다.
 
+	// 하나의 주문은 여러 명의 회원이 할 수 없다.
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -56,15 +56,15 @@ public class Order extends BaseEntity {
 	private Order(Receiver receiver, User user) {
 		this.receiver = receiver;
 		this.user = user;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
+		this.deliveredAt = LocalDateTime.now().plusDays(3);
+		this.status = OrderStatus.PENDING;
 	}
 
 	public static Order create(Receiver receiver, User user) {
 		return new Order(receiver, user);
 	}
 
-	public void mapToORderProduct(OrderProduct orderProduct) {
+	public void mapToOrderProduct(OrderProduct orderProduct) {
 		this.orderProducts.add(orderProduct);
 	}
 }
