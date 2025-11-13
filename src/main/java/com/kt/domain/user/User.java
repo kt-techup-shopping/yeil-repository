@@ -38,7 +38,7 @@ public class User extends BaseEntity {
 	private List<Order> orders = new ArrayList<>();
 
 	public User(String loginId, String password, String name, String email, String mobile, Gender gender,
-		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt, Role role) {
+		LocalDate birthday, Role role) {
 		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
@@ -46,23 +46,21 @@ public class User extends BaseEntity {
 		this.mobile = mobile;
 		this.gender = gender;
 		this.birthday = birthday;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 		this.role = role;
 	}
 
 	// 정적 팩토리 메서드 방식
 	public static User normalUser(String loginId, String password, String name, String email, String mobile, Gender gender,
-		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt){
-		return new User(loginId, password, name, email, mobile, gender, birthday, createdAt, updatedAt, Role.USER);
+		LocalDate birthday){
+		return new User(loginId, password, name, email, mobile, gender, birthday, Role.USER);
 	}
 
 	public static User adminUser(String loginId, String password, String name, String email, String mobile, Gender gender,
-		LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt){
-		return new User(loginId, password, name, email, mobile, gender, birthday, createdAt, updatedAt, Role.ADMIN);
+		LocalDate birthday){
+		return new User(loginId, password, name, email, mobile, gender, birthday, Role.ADMIN);
 	}
-
-
 
 	public void changePassword(String password) {
 		this.password = password;

@@ -34,9 +34,7 @@ public class UserService {
 			request.email(),
 			request.mobile(),
 			request.gender(),
-			request.birthday(),
-			LocalDateTime.now(),
-			LocalDateTime.now()
+			request.birthday()
 		);
 		userRepository.save(newUser);
 	}
