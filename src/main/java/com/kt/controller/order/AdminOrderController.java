@@ -2,18 +2,22 @@ package com.kt.controller.order;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
 import com.kt.common.Paging;
 import com.kt.common.SwaggerAssistance;
 import com.kt.dto.order.OrderResponse;
+import com.kt.dto.product.ProductResponse;
 import com.kt.repository.order.OrderRepository;
+import com.kt.service.order.OrderService;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +31,7 @@ public class AdminOrderController extends SwaggerAssistance {
 	// 2. 그래도 서비스를 통해야 한다
 
 	private final OrderRepository orderRepository;
+	private final OrderService orderService;
 
 	@GetMapping
 	public ApiResult<Page<OrderResponse.Search>> search(
@@ -34,5 +39,11 @@ public class AdminOrderController extends SwaggerAssistance {
 		@ParameterObject Paging paging
 	){
 		return ApiResult.ok(orderRepository.search(keyword, paging.toPageable()));
+	}
+
+	@GetMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<OrderResponse.Detail> detail(@PathVariable Long id){
+		return ApiResult.ok(orderService.detail(id));
 	}
 }

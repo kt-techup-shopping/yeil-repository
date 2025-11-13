@@ -24,4 +24,18 @@ public interface OrderResponse {
 		public Search{
 		}
 	}
+
+	record Detail (
+		Long id,
+		String receiverName,
+		String receiverAddress,
+		String receiverMobile,
+		String productName,
+		Long quantity,
+		Long totalPrice,
+		OrderStatus status,
+		LocalDateTime deliveredAt,
+		LocalDateTime createdAt
+	){
+	}
 }

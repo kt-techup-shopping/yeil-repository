@@ -5,6 +5,7 @@ import com.kt.domain.order.Order;
 import com.kt.domain.product.Product;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
@@ -15,10 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderProduct extends BaseEntity {
 	private Long quantity;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
 	private Order order;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 

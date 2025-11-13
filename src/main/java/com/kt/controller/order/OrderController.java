@@ -27,10 +27,11 @@ public class OrderController extends SwaggerAssistance {
 	// 주문 생성
 	@PostMapping
 	public ApiResult<Void> create(
-		@AuthenticationPrincipal CurrentUser currentUser,
+		// @AuthenticationPrincipal CurrentUser currentUser,
 		@RequestBody @Valid OrderRequest.Create request) {
 		orderService.create(
-			currentUser.getId(), request.productId(), request.name(),
+			// currentUser.getId(),
+			request.userId(), request.productId(), request.name(),
 			request.address(), request.mobile(), request.quantity()
 		);
 		return ApiResult.ok();
