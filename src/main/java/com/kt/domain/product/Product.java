@@ -48,6 +48,8 @@ public class Product extends BaseEntity {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 
 	// 수정

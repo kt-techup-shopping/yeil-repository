@@ -1,24 +1,28 @@
 package com.kt.controller.product;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
 import com.kt.common.Paging;
 import com.kt.dto.product.ProductResponse;
 import com.kt.repository.product.ProductRepository;
+import com.kt.service.product.ProductService;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/products")
-@Tag(name = "주문 관리자", description = "주문 관리자 관련 API")
+@Tag(name = "상품 관리자", description = "상품 관리자 관련 API")
 public class AdminProductController {
 	/**
 	 * 테스트 코드
@@ -66,12 +70,19 @@ public class AdminProductController {
 	 */
 
 	private final ProductRepository productRepository;
+	private final ProductService productService;
 
 	@GetMapping
 	public ApiResult<Page<ProductResponse.Search>> search(
 		@RequestParam(required = false) String keyword,
-		@Parameter(hidden = true) Paging paging
+		@ParameterObject Paging paging // @Parameter -> @ParameterObject
 	){
 		return ApiResult.ok(productRepository.search(keyword, paging.toPageable()));
+	}
+
+	@GetMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<ProductResponse.Detail> detail(@PathVariable Long id){
+		return ApiResult.ok(productService.detail(id));
 	}
 }

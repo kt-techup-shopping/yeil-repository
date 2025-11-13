@@ -14,9 +14,19 @@ public interface ProductResponse {
 		Long price,
 		Long stock,
 		ProductStatus status
-	){
+	) {
 		@QueryProjection
-		public Search{
+		public Search {
 		}
+	}
+
+	@Schema(name = "ProductResponse.Search")
+	record Detail(
+		Long id,
+		String name,
+		Long price,
+		Long stock,
+		ProductStatus status
+	) {
 	}
 }

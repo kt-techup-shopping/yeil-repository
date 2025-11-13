@@ -83,19 +83,4 @@ public class ProductController extends SwaggerAssistance {
 		productService.delete(id);
 		return ApiResult.ok();
 	}
-
-	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public Page<Product> list(
-		@RequestParam(defaultValue = "1") int page,
-		@RequestParam(defaultValue = "10") int size
-	){
-		return productService.list(PageRequest.of(page - 1, size));
-	}
-
-	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public Product detail(@PathVariable Long id){
-		return productService.detail(id);
-	}
 }

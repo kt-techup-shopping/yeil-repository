@@ -1,5 +1,6 @@
 package com.kt.controller.order;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class AdminOrderController extends SwaggerAssistance {
 	@GetMapping
 	public ApiResult<Page<OrderResponse.Search>> search(
 		@RequestParam(required = false) String keyword,
-		@Parameter(hidden = true) Paging paging
+		@ParameterObject Paging paging
 	){
 		return ApiResult.ok(orderRepository.search(keyword, paging.toPageable()));
 	}
