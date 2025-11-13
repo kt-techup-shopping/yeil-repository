@@ -1,7 +1,5 @@
 package com.kt.config;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,7 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
 	private static final String[] GET_PERMIT_ALL = {
-		"/api/v1/public/**"
+		"/api/v1/public/**",
+		"/**"
 	};
 	private static final String[] POST_PERMIT_ALL = {
 		"/api/v1/public/**"

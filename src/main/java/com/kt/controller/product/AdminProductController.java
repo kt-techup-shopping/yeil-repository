@@ -1,4 +1,4 @@
-package com.kt.controller.order;
+package com.kt.controller.product;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
 import com.kt.common.Paging;
-import com.kt.common.SwaggerAssistance;
-import com.kt.dto.order.OrderResponse;
-import com.kt.repository.order.OrderRepository;
+import com.kt.dto.product.ProductResponse;
+import com.kt.repository.product.ProductRepository;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,18 +19,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/admin/orders")
 @Tag(name = "주문 관리자", description = "주문 관리자 관련 API")
-public class AdminOrderController extends SwaggerAssistance {
-	// 해당 서비스에서 하는게 없음
-	// 1. 레포지토리 주입 바로 받아서 사용할 것인지 -> 싱크홀 안티패턴
-	// 2. 그래도 서비스를 통해야 한다
+public class AdminProductController {
 
-	private final OrderRepository orderRepository;
+	private final ProductRepository productRepository;
 
 	@GetMapping
-	public ApiResult<Page<OrderResponse.Search>> search(
+	public ApiResult<Page<ProductResponse.Search>> search(
 		@RequestParam(required = false) String keyword,
 		@Parameter(hidden = true) Paging paging
 	){
-		return ApiResult.ok(orderRepository.search(keyword, paging.toPageable()));
+		return ApiResult.ok(productRepository.search(keyword, paging.toPageable()));
 	}
 }

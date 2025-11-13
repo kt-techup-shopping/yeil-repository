@@ -6,7 +6,7 @@ import com.kt.common.CustomException;
 import com.kt.common.ErrorCode;
 import com.kt.domain.product.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends ProductRepositoryCustom, JpaRepository<Product, Long> {
 	default Product findByIdOrThrow(Long id) {
 		return findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT));
 	}
