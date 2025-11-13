@@ -1,7 +1,5 @@
 package com.kt.config;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,19 +20,19 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
 	private static final String[] GET_PERMIT_ALL = {
-		"/api/v1/public/**"
+		"/api/v1/public/**", "/**"
 	};
 	private static final String[] POST_PERMIT_ALL = {
-		"/api/v1/public/**"
+		"/api/v1/public/**", "/**"
 	};
 	private static final String[] PATCH_PERMIT_ALL = {
-		"/api/v1/public/**"
+		"/api/v1/public/**", "/**"
 	};
 	private static final String[] PUT_PERMIT_ALL = {
-		"/api/v1/public/**"
+		"/api/v1/public/**", "/**"
 	};
 	private static final String[] DELETE_PERMIT_ALL = {
-		"/api/v1/public/**"
+		"/api/v1/public/**", "/**"
 	};
 
 	// 패스워드를 저장하려면 암호화 강제
@@ -54,17 +52,17 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.sessionManagement(
-			session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		).authorizeHttpRequests(
-			request -> {
-				request.requestMatchers(HttpMethod.GET, GET_PERMIT_ALL).permitAll();
-				request.requestMatchers(HttpMethod.POST, POST_PERMIT_ALL).permitAll();
-				request.requestMatchers(HttpMethod.PATCH, PATCH_PERMIT_ALL).permitAll();
-				request.requestMatchers(HttpMethod.PUT, PUT_PERMIT_ALL).permitAll();
-				request.requestMatchers(HttpMethod.DELETE, DELETE_PERMIT_ALL).permitAll();
-			}
-		).authorizeHttpRequests(request -> request.anyRequest().authenticated())
-		.csrf(AbstractHttpConfigurer::disable);
+				session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			).authorizeHttpRequests(
+				request -> {
+					request.requestMatchers(HttpMethod.GET, GET_PERMIT_ALL).permitAll();
+					request.requestMatchers(HttpMethod.POST, POST_PERMIT_ALL).permitAll();
+					request.requestMatchers(HttpMethod.PATCH, PATCH_PERMIT_ALL).permitAll();
+					request.requestMatchers(HttpMethod.PUT, PUT_PERMIT_ALL).permitAll();
+					request.requestMatchers(HttpMethod.DELETE, DELETE_PERMIT_ALL).permitAll();
+				}
+			).authorizeHttpRequests(request -> request.anyRequest().authenticated())
+			.csrf(AbstractHttpConfigurer::disable);
 
 		return http.build();
 	}

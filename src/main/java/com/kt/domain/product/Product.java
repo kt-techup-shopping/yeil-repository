@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.util.Strings;
+
 import com.kt.common.BaseEntity;
+import com.kt.common.ErrorCode;
+import com.kt.common.Preconditions;
 import com.kt.domain.orderProduct.OrderProduct;
 
 import jakarta.persistence.Entity;
@@ -29,10 +33,25 @@ public class Product extends BaseEntity {
 
 	// 생성
 	public Product(String name, Long price, Long stock) {
+		// if (Strings.isBlank(name)) {
+		// 	throw new IllegalArgumentException("상품명은 필수입니다.");
+		// }
+		// if (price == null || price < 0) {
+		// 	throw new IllegalArgumentException("상품 가격은 0원 이상이어야 합니다.");
+		// }
+
+		// Preconditions 활용
+		Preconditions.validate(Strings.isNotBlank(name), ErrorCode.INVALID_PARAMETER);
+		Preconditions.validate(price != null && price >= 0, ErrorCode.INVALID_PARAMETER);
+		Preconditions.validate(stock != null && stock >= 0, ErrorCode.INVALID_PARAMETER);
+
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
+
 	// 수정
 	public void update(String name, Long price, Long stock) {
 		this.name = name;

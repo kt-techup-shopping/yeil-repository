@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.domain.product.Product;
+import com.kt.dto.product.ProductResponse;
 import com.kt.repository.product.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -39,12 +40,12 @@ public class ProductService {
 		product.delete();
 	}
 
-	public void soldOut(Long id){
+	public void soldOut(Long id) {
 		var product = productRepository.findByIdOrThrow(id);
 		product.soldOut();
 	}
 
-	public void inActivate(Long id){
+	public void inActivate(Long id) {
 		var product = productRepository.findByIdOrThrow(id);
 		product.inActivate();
 	}
@@ -64,14 +65,16 @@ public class ProductService {
 		product.increaseStock(quantity);
 	}
 
-	// 상품 리스트 조회
-	public Page<Product> list(Pageable pageable) {
-		return productRepository.findAll(pageable);
-	}
-
 	// 상품 단건 조회
-	public Product detail(Long id) {
-		return productRepository.findByIdOrThrow(id);
+	public ProductResponse.Detail detail(Long id) {
+		var product = productRepository.findByIdOrThrow(id);
+		return new ProductResponse.Detail(
+			product.getId(),
+			product.getName(),
+			product.getPrice(),
+			product.getStock(),
+			product.getStatus()
+		);
 	}
 
 }

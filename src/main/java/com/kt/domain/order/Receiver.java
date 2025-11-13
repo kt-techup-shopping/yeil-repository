@@ -3,9 +3,11 @@ package com.kt.domain.order;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
+@NoArgsConstructor
 public class Receiver {
 	// receiver_name
 	@Column(name = "receiver_name")
