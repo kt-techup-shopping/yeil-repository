@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kt.common.ApiResult;
 import com.kt.common.SwaggerAssistance;
 import com.kt.dto.order.OrderRequest;
-import com.kt.security.CurrentUser;
+import com.kt.security.DefaultCurrentUser;
 import com.kt.service.order.OrderService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,11 +27,11 @@ public class OrderController extends SwaggerAssistance {
 	// 주문 생성
 	@PostMapping
 	public ApiResult<Void> create(
-		// @AuthenticationPrincipal CurrentUser currentUser,
+		@AuthenticationPrincipal DefaultCurrentUser defaultCurrentUser,
 		@RequestBody @Valid OrderRequest.Create request) {
 		orderService.create(
-			// currentUser.getId(),
-			request.userId(), request.productId(), request.name(),
+			// request.userId()
+			defaultCurrentUser.getId(), request.productId(), request.name(),
 			request.address(), request.mobile(), request.quantity()
 		);
 		return ApiResult.ok();

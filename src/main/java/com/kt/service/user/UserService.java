@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	// 트랜잭션 처리
 	// PSA - Portable Service Abstraction
@@ -29,7 +31,8 @@ public class UserService {
 	public void create(UserRequest.Create request) {
 		var newUser = User.normalUser(
 			request.loginId(),
-			request.password(),
+			// request.password(),
+			passwordEncoder.encode(request.password()),
 			request.name(),
 			request.email(),
 			request.mobile(),
