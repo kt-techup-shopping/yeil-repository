@@ -1,12 +1,16 @@
 package com.kt.service.order;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
+import org.aspectj.lang.annotation.Aspect;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.common.CustomException;
 import com.kt.common.ErrorCode;
+import com.kt.common.Lock;
 import com.kt.common.Preconditions;
 import com.kt.domain.order.Order;
 import com.kt.domain.order.OrderStatus;
@@ -29,8 +33,10 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final UserRepository userRepository;
 	private final OrderProductRepository orderProductRepository;
+	private final RedissonClient redissonClient;
 
 	// 주문 생성
+	@Lock(key = Lock.Key.STOCK, index = 1, waitTime = 1000, leaseTime = 500, timeUnit = TimeUnit.MILLISECONDS)
 	public void create(
 		Long userId,
 		Long productId,
@@ -39,6 +45,11 @@ public class OrderService {
 		String receiverMobile,
 		Long quantity
 	) {
+		// Redis 락 획득 -> getLock에서 문자열을 인자로 줘야함
+		// 1. try-catch-finally
+		// 2. 메소드 레벨에서 throws
+		// try-catch-resource 불가 -> 자원 관리에 Lock 해당 안 됨
+
 		var product = productRepository.findByIdOrThrow(productId);
 		Preconditions.validate(product.canProvide(quantity), ErrorCode.NOT_ENOUGH_STOCK);
 

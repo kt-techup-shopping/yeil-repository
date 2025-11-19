@@ -4,6 +4,16 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      connection-timeout: 10000
+
+  data:
+    redis:
+      host: ${redis.host:localhost}
+      port: ${redis.host:6379}
   jpa:
     hibernate:
       ddl-auto: update

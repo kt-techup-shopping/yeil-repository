@@ -13,17 +13,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.kt.security.JwtFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
 	private static final String[] GET_PERMIT_ALL = {
-		"/api/v1/public/**", "/**"
+		"/api/health/**", "/swagger-ui/**", "/v3/api-docs/**"
 	};
 	private static final String[] POST_PERMIT_ALL = {
-		"/api/v1/public/**", "/**"
+		"/users", "/auth/login"
 	};
 	private static final String[] PATCH_PERMIT_ALL = {
 		"/api/v1/public/**", "/**"
@@ -34,6 +40,7 @@ public class SecurityConfiguration {
 	private static final String[] DELETE_PERMIT_ALL = {
 		"/api/v1/public/**", "/**"
 	};
+	private final JwtFilter JwtFilter;
 
 	// 패스워드를 저장하려면 암호화 강제
 	// bcrypt 단방향 해시 암호화
@@ -60,8 +67,10 @@ public class SecurityConfiguration {
 					request.requestMatchers(HttpMethod.PATCH, PATCH_PERMIT_ALL).permitAll();
 					request.requestMatchers(HttpMethod.PUT, PUT_PERMIT_ALL).permitAll();
 					request.requestMatchers(HttpMethod.DELETE, DELETE_PERMIT_ALL).permitAll();
+					request.anyRequest().authenticated();
 				}
-			).authorizeHttpRequests(request -> request.anyRequest().authenticated())
+			)
+			.addFilterBefore(JwtFilter, UsernamePasswordAuthenticationFilter.class)
 			.csrf(AbstractHttpConfigurer::disable);
 
 		return http.build();

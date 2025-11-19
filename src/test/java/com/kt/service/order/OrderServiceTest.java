@@ -98,40 +98,48 @@ class OrderServiceTest {
 	}
 
 	@Test
-	void 동시에_100명_주문() throws InterruptedException {
+	void 동시에_여러명이_주문해도_재고이상_주문은_막힌다() throws InterruptedException {
+		// given
+		int repeatCount = 100;
+		int threadCount = 30;
+
 		var userList = new ArrayList<User>();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < repeatCount; i++) {
 			userList.add(new User(
 				"test-" + i,
 				"1234",
 				"user-" + i,
-				"eamil-" + i,
-				"010-1234-5678-i",
+				"email-" + i,
+				"010-1234-5678-" + i,
 				Gender.MALE,
 				LocalDate.now(),
-				Role.USER));
+				Role.USER
+			));
 		}
+
 		var users = userRepository.saveAll(userList);
 		var product = productRepository.save(
 			new Product(
 				"테스트 상품",
 				100_000L,
-				200L
+				10L   // 재고 10개
 			)
 		);
 
-		var executorService = Executors.newFixedThreadPool(100);
+		var executorService = Executors.newFixedThreadPool(threadCount);
 		var startLatch = new CountDownLatch(1);
-		var doneLatch = new CountDownLatch(100);
+		var doneLatch = new CountDownLatch(repeatCount);
 
 		AtomicInteger successCount = new AtomicInteger(0);
 		AtomicInteger failureCount = new AtomicInteger(0);
-		for (int i = 0; i < 100; i++) {
+
+		for (int i = 0; i < repeatCount; i++) {
 			int finalId = i;
 			executorService.submit(() -> {
 				try {
-					startLatch.await();
+					startLatch.await(); // 동시에 출발
 					var targetUser = users.get(finalId);
+
 					orderService.create(
 						targetUser.getId(),
 						product.getId(),
@@ -140,22 +148,37 @@ class OrderServiceTest {
 						"010-0000-0000-" + finalId,
 						1L
 					);
+
 					successCount.incrementAndGet();
 				} catch (Exception e) {
+					// 예외 로그 보고 싶으면 여기서 찍기
+					// e.printStackTrace();
 					failureCount.incrementAndGet();
 				} finally {
 					doneLatch.countDown();
 				}
 			});
 		}
+
+		// 전부 출발
 		startLatch.countDown();
-		doneLatch.await(30, TimeUnit.SECONDS);
+
+		// 최대 10초까지만 기다리고 종료
+		doneLatch.await(10, TimeUnit.SECONDS);
 		executorService.shutdown();
 
+		// then
 		var foundedProduct = productRepository.findByIdOrThrow(product.getId());
+
 		System.out.println("성공한 주문 수: " + successCount.get());
 		System.out.println("실패한 주문 수: " + failureCount.get());
 		System.out.println("남은 재고 수: " + foundedProduct.getStock());
+
+		// 재고는 10개라 10건만 성공해야 함
+		Assertions.assertThat(successCount.get()).isEqualTo(10);
+		Assertions.assertThat(foundedProduct.getStock()).isEqualTo(0L);
+		Assertions.assertThat(failureCount.get()).isEqualTo(repeatCount - 10);
 	}
+
 
 }
