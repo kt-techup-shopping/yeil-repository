@@ -1,6 +1,4 @@
-package com.kt.aspect;
-
-import java.util.concurrent.TimeUnit;
+package com.kt.aspect.lock;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
