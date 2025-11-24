@@ -1,6 +1,7 @@
 package com.kt.controller.user;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.kt.common.SwaggerAssistance;
 import com.kt.dto.user.UserCreateRequest;
 import com.kt.dto.user.UserRequest;
 import com.kt.dto.user.UserUpdatePasswordRequest;
+import com.kt.security.CurrentUser;
 import com.kt.service.user.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -73,4 +75,11 @@ public class UserController extends SwaggerAssistance {
 		return ApiResult.ok();
 	}
 
+	@GetMapping("/orders")
+	@ResponseStatus(HttpStatus.OK)
+	public void getOrders(
+		@AuthenticationPrincipal CurrentUser currentUser
+	) {
+		userService.getOrders(currentUser.getId());
+	}
 }

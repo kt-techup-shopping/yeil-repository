@@ -43,6 +43,7 @@ public class Order extends BaseEntity {
 	private User user;
 
 	@OneToMany(mappedBy = "order")
+	// @BatchSize(size = 2)
 	private List<OrderProduct> orderProducts = new ArrayList<>();
 
 	//하나의 오더는 여러개의 상품을 가질수있음

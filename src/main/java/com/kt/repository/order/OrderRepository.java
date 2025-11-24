@@ -1,7 +1,10 @@
 package com.kt.repository.order;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +31,10 @@ public interface OrderRepository extends OrderRepositoryCustom, JpaRepository<Or
 		where o.id = :id
 		""")
 	Optional<Order> findOrderDetail(Long id);
+
+	// String[] attributePaths() default {}
+	@NotNull
+	@EntityGraph(attributePaths = {"orderProducts", "orderProducts.product"})
+	// @EntityGraph(attributePaths = "orderProducts")
+	List<Order> findAllByUserId(Long userId);
 }

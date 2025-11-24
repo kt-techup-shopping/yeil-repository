@@ -2,8 +2,10 @@ package com.kt.repository.user;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -25,8 +27,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Boolean existsByLoginId(String loginId);
 
 	@Query("""
-	SELECT exists (SELECT u FROM User u WHERE u.loginId = ?1)
-""")
+			SELECT exists (SELECT u FROM User u WHERE u.loginId = ?1)
+		""")
 	Boolean existsByLoginIdJPQL(String loginId);
 
 	Page<User> findAllByNameContaining(String name, Pageable pageable);
@@ -36,4 +38,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	}
 
 	Optional<User> findByLoginId(String loginId);
+
+	// @Query(value = """
+	// 	SELECT DISTINCT u FROM User u
+	// 	LEFT JOIN FETCH u.orders o
+	// 	WHERE u.id = :id
+	// """)
+	// @NotNull Optional<User> findById(@NotNull Long id);
+
+	@Query(value = """
+			SELECT DISTINCT u FROM User u
+			LEFT JOIN FETCH u.orders o
+			WHERE u.id = :id
+		""")
+	// @EntityGraph(attributePaths = "orders")
+	@NotNull
+	Optional<User> findById(@NotNull Long id);
 }
