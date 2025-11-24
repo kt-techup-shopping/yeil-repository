@@ -1,19 +1,17 @@
 package com.kt.service.order;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.redisson.api.RedissonClient;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.common.CustomException;
 import com.kt.common.ErrorCode;
 import com.kt.common.Lock;
+import com.kt.common.MessageEvent;
 import com.kt.common.Preconditions;
 import com.kt.domain.order.Order;
-import com.kt.domain.order.OrderStatus;
 import com.kt.domain.order.Receiver;
 import com.kt.domain.orderProduct.OrderProduct;
 import com.kt.dto.order.OrderResponse;
@@ -33,7 +31,9 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final UserRepository userRepository;
 	private final OrderProductRepository orderProductRepository;
-	private final RedissonClient redissonClient;
+	private final ApplicationEventPublisher applicationEventPublisher;
+	// private final RedissonClient redissonClient;
+	// private final SlackApi slackApi;
 
 	// 주문 생성
 	@Lock(key = Lock.Key.STOCK, index = 1, waitTime = 1000, leaseTime = 500, timeUnit = TimeUnit.MILLISECONDS)
@@ -63,6 +63,15 @@ public class OrderService {
 
 		product.mapToOrderProduct(orderProduct);
 		order.mapToOrderProduct(orderProduct);
+
+		// slack 알림
+		// slackApi.notify("User: "+user.getName()+" ordered "+ quantity * product.getPrice());
+		// 저수준 모듈이 고수준 모듈을 의존하는 문제 발생 -> DIP 방법 (EDA)
+
+		applicationEventPublisher.publishEvent(
+			new MessageEvent("User: " + user.getName() + " ordered " + quantity * product.getPrice())
+		);
+
 	}
 
 	public OrderResponse.Detail detail(Long id) {

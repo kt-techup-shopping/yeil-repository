@@ -2,17 +2,27 @@ package com.kt.common;
 
 import java.util.Arrays;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.kt.integration.slack.NotifyApi;
+
 import io.swagger.v3.oas.annotations.Hidden;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Hidden
+@Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ApiAdvice {
+
+	private final NotifyApi notifyApi;
+	private final ApplicationEventPublisher applicationEventPublisher;
 	// 어떤 예외를 처리할 것인지 정의
 	// MethodArgumentNotValidException 이 Exception 처리하도록
 	// @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -20,6 +30,12 @@ public class ApiAdvice {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse.ErrorData> internalServerError(Exception e) {
 		e.printStackTrace();//<-에러가 뜬건지 알아볼 때
+		applicationEventPublisher.publishEvent(
+			new MessageEvent(e.getMessage())
+		);
+
+		log.error(Exceptions.simplify(e));
+		notifyApi.notify(e.getMessage());
 		return ErrorResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다. 백엔드팀에 문의하세요.");
 	}
 
@@ -36,5 +52,7 @@ public class ApiAdvice {
 
 		return ErrorResponse.error(HttpStatus.BAD_REQUEST, message);
 	}
+
+
 
 }
