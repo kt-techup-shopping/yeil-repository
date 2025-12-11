@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import com.kt.common.CustomException;
+import com.kt.common.exception.CustomException;
 
 class ProductTest {
 	// POJO -> 객체 생성이 잘 되는지 확인

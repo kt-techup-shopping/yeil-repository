@@ -3,7 +3,7 @@ package com.kt.integration.eventListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.MessageEvent;
+import com.kt.common.support.MessageEvent;
 import com.kt.integration.slack.NotifyApi;
 
 import lombok.RequiredArgsConstructor;

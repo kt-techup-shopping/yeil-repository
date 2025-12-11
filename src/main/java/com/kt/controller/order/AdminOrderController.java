@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.common.ApiResult;
-import com.kt.common.Paging;
-import com.kt.common.SwaggerAssistance;
+import com.kt.common.response.ApiResult;
+import com.kt.common.request.Paging;
+import com.kt.common.support.SwaggerAssistance;
 import com.kt.dto.order.OrderResponse;
-import com.kt.dto.product.ProductResponse;
 import com.kt.repository.order.OrderRepository;
 import com.kt.service.order.OrderService;
 

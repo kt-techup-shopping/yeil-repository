@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.common.ApiResult;
-import com.kt.common.TechUpLogger;
+import com.kt.common.response.ApiResult;
+import com.kt.common.support.TechUpLogger;
 import com.kt.domain.history.HistoryType;
 import com.kt.dto.auth.LoginRequest;
 import com.kt.dto.auth.LoginResponse;

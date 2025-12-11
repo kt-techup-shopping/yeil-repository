@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.kt.common.profile.AppProfile;
+import com.kt.common.profile.DevProfile;
+import com.kt.common.profile.LocalProfile;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -22,10 +26,29 @@ public class RedisConfiguration {
 	// redis 내에서 만료 시간을 설정할 수 있음
 
 	@Bean
+	@DevProfile
+	@AppProfile
 	public RedissonClient redissonClient() {
 		var config = new Config();
-		var uri = String.format("redis://%s:%d", redisProperties.getHost(), redisProperties.getPort());
-		config.useSingleServer().setAddress(uri);
+		var host = redisProperties.getCluster().getNodes().getFirst();
+		var uri = String.format("rediss://%s", host);
+
+		config
+			.useClusterServers()
+			.addNodeAddress(uri);
+
+		return Redisson.create(config);
+	}
+
+	@Bean
+	@LocalProfile
+	public RedissonClient localRedissonClient() {
+		var config = new Config();
+		var host = redisProperties.getCluster().getNodes().getFirst();
+		var uri = String.format("redis://%s", host);
+
+		config
+			.useSingleServer().setAddress(uri);
 		return Redisson.create(config);
 	}
 

@@ -2,7 +2,7 @@ package com.kt.integration.slack;
 
 import org.springframework.stereotype.Component;
 
-import com.kt.common.LocalProfile;
+import com.kt.common.profile.LocalProfile;
 
 import lombok.extern.slf4j.Slf4j;
 

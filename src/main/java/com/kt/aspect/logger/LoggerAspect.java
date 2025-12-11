@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.TechUpLogger;
+import com.kt.common.support.TechUpLogger;
 import com.kt.security.CurrentUser;
 import com.kt.service.history.HistoryService;
 
@@ -20,7 +20,7 @@ public class LoggerAspect {
 
 	private final HistoryService historyService;
 
-	@Around("@annotation(com.kt.common.TechUpLogger) && @annotation(techUpLogger)")
+	@Around("@annotation(com.kt.common.support.TechUpLogger) && @annotation(techUpLogger)")
 	public Object techUpLogger(ProceedingJoinPoint joinPoint, TechUpLogger techUpLogger) throws Throwable {
 		var principal = (CurrentUser)Arrays.stream(joinPoint.getArgs())
 			.filter(arg -> arg instanceof CurrentUser)

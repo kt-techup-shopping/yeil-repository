@@ -2,7 +2,7 @@ package com.kt.integration.slack;
 
 import org.springframework.stereotype.Component;
 
-import com.kt.common.DevProfile;
+import com.kt.common.profile.DevProfile;
 
 @Component
 @DevProfile

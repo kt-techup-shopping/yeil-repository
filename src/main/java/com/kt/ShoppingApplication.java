@@ -8,10 +8,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import com.kt.common.MessageEvent;
+import com.kt.common.support.MessageEvent;
 
 import lombok.RequiredArgsConstructor;
 
+// @EnableJpaAuditing
 @EnableAsync
 @ConfigurationPropertiesScan
 @SpringBootApplication

@@ -1,6 +1,6 @@
 package com.kt.domain.history;
 
-import com.kt.common.BaseEntity;
+import com.kt.common.support.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

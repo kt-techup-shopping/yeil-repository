@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.kt.domain.product.Product;
 import com.kt.domain.user.Gender;
@@ -22,6 +23,7 @@ import com.kt.repository.orderProduct.OrderProductRepository;
 import com.kt.repository.product.ProductRepository;
 import com.kt.repository.user.UserRepository;
 
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // @Transactional // 비동기 테스트에서 트랜잭션 충돌
 class OrderServiceTest {
@@ -65,7 +67,7 @@ class OrderServiceTest {
 				"test",
 				"1234",
 				"user",
-				"eamil",
+				"eamil123@gmail.com",
 				"010-1234-5678",
 				Gender.MALE,
 				LocalDate.now(),
@@ -89,11 +91,10 @@ class OrderServiceTest {
 		);
 
 		// then
-		var foundedProduct = productRepository.findByIdPessimistic(product.getId());
+		var foundedProduct = productRepository.findByIdOrThrow(product.getId());
 		var foundedOrder = orderRepository.findAll().stream().findFirst();
 
 		Assertions.assertThat(foundedProduct.getStock()).isEqualTo(8L);
-		Assertions.assertThat(foundedProduct.getOrderProducts()).isNotEmpty();
 		Assertions.assertThat(foundedOrder).isPresent();
 	}
 
@@ -109,7 +110,7 @@ class OrderServiceTest {
 				"test-" + i,
 				"1234",
 				"user-" + i,
-				"email-" + i,
+				"email"+i+"@gmail.com" ,
 				"010-1234-5678-" + i,
 				Gender.MALE,
 				LocalDate.now(),

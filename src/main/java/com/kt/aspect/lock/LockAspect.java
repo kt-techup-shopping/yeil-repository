@@ -6,9 +6,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.CustomException;
-import com.kt.common.ErrorCode;
-import com.kt.common.Lock;
+import com.kt.common.exception.CustomException;
+import com.kt.common.exception.ErrorCode;
+import com.kt.common.support.Lock;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ public class LockAspect {
 	private final RedissonClient redissonClient;
 
 	// @Around("execution(* com.kt.service.order.OrderService.create(..))")
-	@Around("@annotation(com.kt.common.Lock) && @annotation(lock)")
+	@Around("@annotation(com.kt.common.support.Lock) && @annotation(lock)")
 	public Object stockLock(ProceedingJoinPoint joinPoint, Lock lock) throws Throwable {
 		var arguments = joinPoint.getArgs();
 		var productId = (long)arguments[lock.index()];

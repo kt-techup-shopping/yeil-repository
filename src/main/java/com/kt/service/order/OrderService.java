@@ -6,11 +6,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kt.common.CustomException;
-import com.kt.common.ErrorCode;
-import com.kt.common.Lock;
-import com.kt.common.MessageEvent;
-import com.kt.common.Preconditions;
+import com.kt.common.exception.CustomException;
+import com.kt.common.exception.ErrorCode;
+import com.kt.common.support.Lock;
+import com.kt.common.support.MessageEvent;
+import com.kt.common.support.Preconditions;
 import com.kt.domain.order.Order;
 import com.kt.domain.order.Receiver;
 import com.kt.domain.orderProduct.OrderProduct;

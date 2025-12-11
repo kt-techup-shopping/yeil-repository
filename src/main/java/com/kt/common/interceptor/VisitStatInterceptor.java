@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.kt.common.VisitorEvent;
-import com.kt.visitstat.service.VisitStatService;
+import com.kt.common.support.VisitorEvent;
+import com.kt.service.visitStat.VisitStatService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

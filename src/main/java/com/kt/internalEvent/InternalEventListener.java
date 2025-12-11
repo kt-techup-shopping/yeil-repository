@@ -4,8 +4,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.VisitorEvent;
-import com.kt.visitstat.service.VisitStatService;
+import com.kt.common.support.VisitorEvent;
+import com.kt.service.visitStat.VisitStatService;
 
 import lombok.RequiredArgsConstructor;
 
